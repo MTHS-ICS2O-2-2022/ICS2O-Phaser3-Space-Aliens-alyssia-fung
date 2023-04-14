@@ -6,7 +6,7 @@
 
 [![Deploy Pages](https://github.com/MTHS-ICS2O-2-2022/ICS2O-Unit-3-04-alyssia-fung/workflows/Deploy%20Pages/badge.svg)](https://github.com/MTHS-ICS2O-2-2022/ICS2O-Unit-3-04-alyssia-fung/actions)
 
-This site can be found at: [https://MTHS-ICS2O-2-2022.github.io/ICS2O-phaser3-alyssia-fung](https://MTHS-ICS2O-2-2022.github.io/ICS2O-Unit-3-04-alyssia-fung)
+This site can be found at: [https://MTHS-ICS2O-2-2022.github.io/ICS2O-Phaser3-Space-alyssia-fung](https://MTHS-ICS2O-2-2022.github.io/ICS2O-Unit-3-04-alyssia-fung)
 
 ---
 

@@ -67,7 +67,9 @@ This method is called once per game step while the scene is running.
 */
 
   update(time, delta) {
-    // pass
+    if (time > 5000) {
+      this.scene.switch("menuScene")
+    }
   }
 }
 

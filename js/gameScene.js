@@ -1,3 +1,4 @@
+gameScene.js
 /* global Phaser */
 
 /**
@@ -11,6 +12,8 @@ class GameScene extends Phaser.Scene {
     super({ key: "gameScene" })
     this.background = null
     this.ship = null
+    this.missilesGroup = null // Added declaration for missilesGroup
+    this.fireMissile = false // Added declaration for fireMissile
   }
 
   /**
@@ -31,6 +34,7 @@ class GameScene extends Phaser.Scene {
     console.log("Game Scene")
     this.load.image("starBackground", "assets/starBackground.png")
     this.load.image("ship", "assets/spaceShip.png")
+    this.load.image("missile", "assets/missile.png") // Added missile asset
   }
 
   /**
@@ -43,6 +47,8 @@ class GameScene extends Phaser.Scene {
     this.background.setOrigin(0, 0)
 
     this.ship = this.physics.add.sprite(1920 / 2, 1080 - 100, "ship")
+
+    this.missilesGroup = this.physics.add.group() // Moved missilesGroup creation to create() method
   }
 
   /**
@@ -54,6 +60,7 @@ class GameScene extends Phaser.Scene {
   update(time, delta) {
     const keyLeftObj = this.input.keyboard.addKey("LEFT")
     const keyRightObj = this.input.keyboard.addKey("RIGHT")
+    const keySpaceObj = this.input.keyboard.addKey("SPACE")
 
     if (keyLeftObj.isDown === true) {
       this.ship.x -= 15
@@ -63,6 +70,19 @@ class GameScene extends Phaser.Scene {
     if (keyRightObj.isDown === true) {
       this.ship.x += 15
       if (this.ship.x > 1920) this.ship.x = 1920
+    }
+
+    if (keySpaceObj.isDown === true) {
+      if (this.fireMissile === false) {
+        // fire a missile
+        this.fireMissile = true
+        const aNewMissile = this.physics.add.sprite(
+          this.ship.x,
+          this.ship.y,
+          "missile"
+        )
+        this.missilesGroup.add(aNewMissile)
+      }
     }
   }
 }

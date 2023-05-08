@@ -1,11 +1,5 @@
 /* global Phaser */
 
-// Copyright (c) 2023 Alyssia Fung. All rights reserved.
-//
-// Created by: Alyssia Fung
-// Created on: Mar 2023
-// This is the Splash Scene
-
 /**
  * This class is the Game Scene.
  */
@@ -20,9 +14,9 @@ class GameScene extends Phaser.Scene {
   }
 
   /**
-   * can be defined on your own Scenes.
+   * Can be defined on your own Scenes.
    * This method is called by the Scene Manager when the scene starts,
-   *   before preload() and create().
+   * before preload() and create().
    * @param {object} data - Any data passed via ScenePlugin.add() or ScenePlugin.start().
    */
   init(data) {
@@ -54,11 +48,22 @@ class GameScene extends Phaser.Scene {
   /**
    * Should be overridden by your own Scenes.
    * This method is called once per game step while the scene is running.
-   *  @param {number} time - The current time.
-   *  @param {number} delta - The delta time in ms since the last frame.
+   * @param {number} time - The current time.
+   * @param {number} delta - The delta time in ms since the last frame.
    */
   update(time, delta) {
-    // pass
+    const keyLeftObj = this.input.keyboard.addKey("LEFT")
+    const keyRightObj = this.input.keyboard.addKey("RIGHT")
+
+    if (keyLeftObj.isDown === true) {
+      this.ship.x -= 15
+      if (this.ship.x < 0) this.ship.x = 0
+    }
+
+    if (keyRightObj.isDown === true) {
+      this.ship.x += 15
+      if (this.ship.x > 1920) this.ship.x = 1920
+    }
   }
 }
 

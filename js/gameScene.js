@@ -1,4 +1,3 @@
-gameScene.js
 /* global Phaser */
 
 /**

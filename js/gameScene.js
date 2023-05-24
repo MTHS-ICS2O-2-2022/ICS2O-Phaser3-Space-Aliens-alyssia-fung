@@ -4,29 +4,7 @@
  * This class is the Game Scene.
  **/
 class GameScene extends Phaser.Scene {
-  // creat an alien
-  createAlien() {
-    const alienXLocation = Math.floor(Math.random() * 1920) + 1 // this will get a number between 1 and 1920
-    let alienXVelocity = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50
-    alienXVelocity *= Math.floor(Math.random()) ? 1 : -1 // this will add minus sign in 50% of cases
-    const analien = this.physics.add.sprite(alienXLocation, -100, "alien")
-    analien.body.velocity.y = 200
-    analien.body.velocity.x = alienXVelocity
-    this.aliensGroup.add(anAlien)
-  }
-
   /**
-   * This method is the constructor.
-   */
-  constructor() {
-    super({ key: "gameScene" })
-    this.background = null
-    this.ship = null
-    this.fireMissile = false // Added declaration for fireMissile
-  }
-
-  /**
-   * Can be defined on your own Scenes.
    * This method is called by the Scene Manager when the scene starts,
    * before preload() and create().
    * @param {object} data - Any data passed via ScenePlugin.add() or ScenePlugin.start().
@@ -36,7 +14,6 @@ class GameScene extends Phaser.Scene {
   }
 
   /**
-   * Can be defined on your own Scenes.
    * Use it to load assets.
    */
   preload() {
@@ -45,14 +22,15 @@ class GameScene extends Phaser.Scene {
     // images
     this.load.image("starBackground", "assets/starBackground.png")
     this.load.image("ship", "assets/spaceShip.png")
-    this.load.image("missile", "assets/missile.png") // Added missile asset
+    this.load.image("missile", "assets/missile.png")
     this.load.image("alien", "assets/alien.png")
+
     // sounds
     this.load.audio("laser", "assets/laser1.wav")
+    this.load.audio("explosion", "assets/explosion.wav")
   }
 
   /**
-   * Can be defined on your own Scenes.
    * Use it to create your game objects.
    * @param {object} data - Any data passed via ScenePlugin.add() or ScenePlugin.start().
    */
@@ -63,11 +41,25 @@ class GameScene extends Phaser.Scene {
     this.ship = this.physics.add.sprite(1920 / 2, 1080 - 100, "ship")
 
     // create a group for the missiles
-    this.missilesGroup = this.physics.add.group() // Moved missilesGroup creation to create() method
+    this.missilesGroup = this.physics.add.group()
 
     // create a group for the aliens
     this.aliensGroup = this.physics.add.group()
     this.createAlien()
+
+    // Collision between missile and alien
+    this.physics.add.collider(
+      this.missilesGroup,
+      this.aliensGroup,
+      function (missileCollide, alienCollide) {
+        missileCollide.destroy()
+        alienCollide.destroy()
+        this.sound.play("explosion")
+        this.createAlien()
+        this.createAlien()
+      },
+      this
+    )
   }
 
   /**
@@ -77,8 +69,6 @@ class GameScene extends Phaser.Scene {
    * @param {number} delta - The delta time in ms since the last frame.
    */
   update(time, delta) {
-    // called 60 times a second, hopefully!
-
     const keyLeftObj = this.input.keyboard.addKey("LEFT")
     const keyRightObj = this.input.keyboard.addKey("RIGHT")
     const keySpaceObj = this.input.keyboard.addKey("SPACE")

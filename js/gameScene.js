@@ -57,9 +57,7 @@ class GameScene extends Phaser.Scene {
         this.sound.play("explosion")
         this.createAlien()
         this.createAlien()
-      },
-      this
-    )
+      }.bind(this))
   }
 
   /**

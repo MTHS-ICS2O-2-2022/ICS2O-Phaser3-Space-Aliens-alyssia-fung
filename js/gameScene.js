@@ -9,8 +9,19 @@ class GameScene extends Phaser.Scene {
    * before preload() and create().
    * @param {object} data - Any data passed via ScenePlugin.add() or ScenePlugin.start().
    */
+
+  createAlien() {
+    const alienXLocation = Math.floor(Math.random() * 1920) + 1
+    let alienXVelocity = Math.floor(Math.random() * 50) + 1
+    alienXVelocity *= Math.round(Math.random()) ? 1 : -1
+    const anAlien = this.physics.add.sprite(alienXLocation, -100, "alien")
+    anAlien.body.velocity.y = 200
+    anAlien.body.velocity.x = alienXVelocity
+    this.aliensGroup.add(anAlien)
+  }
+
   init(data) {
-    this.cameras.main.setBackgroundColor("ffffff")
+    this.cameras.main.setBackgroundColor(0xffffff)
   }
 
   /**
@@ -27,7 +38,7 @@ class GameScene extends Phaser.Scene {
 
     // sounds
     this.load.audio("laser", "assets/laser1.wav")
-    this.load.audio("explosion", "assets/explosion.wav")
+    this.load.audio("explosion", "assets/barrelExploding.wav")
   }
 
   /**
@@ -44,7 +55,7 @@ class GameScene extends Phaser.Scene {
     this.missilesGroup = this.physics.add.group()
 
     // create a group for the aliens
-    this.aliensGroup = this.physics.add.group()
+    this.aliensGroup = this.add.group()
     this.createAlien()
 
     // Collision between missile and alien
@@ -57,7 +68,8 @@ class GameScene extends Phaser.Scene {
         this.sound.play("explosion")
         this.createAlien()
         this.createAlien()
-      }.bind(this))
+      }.bind(this)
+    )
   }
 
   /**
@@ -82,7 +94,7 @@ class GameScene extends Phaser.Scene {
     }
 
     if (keySpaceObj.isDown === true) {
-      if (this.fireMissile === false) {
+      if (!this.fireMissile) {
         // fire a missile
         this.fireMissile = true
         const aNewMissile = this.physics.add.sprite(
@@ -104,7 +116,7 @@ class GameScene extends Phaser.Scene {
       if (item.y < 0) {
         item.destroy()
       }
-    })
+    }, this)
   }
 }
 
